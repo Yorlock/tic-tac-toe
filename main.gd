@@ -5,12 +5,14 @@ extends Node
 var temp_marker
 
 var player: int
+var first_turn_player: int = -1
 var player_1_score: int = 0
 var player_2_score: int = 0
-var first_turn_player: int = -1
+var winner: int
+
 var score_format: String = "Player 1: %d\nPlayer 2: %d"
 var next_player_format: String = "Next player: %d"
-var winner: int
+
 var moves: int
 const MAX_MOVES: int = 9
 
@@ -121,15 +123,16 @@ func check_win():
 		
 		if row_sum == 3 or column_sum == 3 or diagonal1_sum == 3 or diagonal2_sum == 3:
 			winner = 1
+			return winner
 		elif row_sum == -3 or column_sum == -3 or diagonal1_sum == -3 or diagonal2_sum == -3:
 			winner = -1
+			return winner
 
 	return winner
 
 func check_draw():
 	if moves == MAX_MOVES: return true
 	return false
-
 
 func _on_game_over_menu_restart() -> void:
 	new_game()
