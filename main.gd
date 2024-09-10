@@ -7,7 +7,9 @@ var temp_marker
 var player: int
 var player_1_score: int = 0
 var player_2_score: int = 0
+var first_turn_player: int = -1
 var score_format: String = "Player 1: %d\nPlayer 2: %d"
+var next_player_format: String = "Next player: %d"
 var winner: int
 var moves: int
 const MAX_MOVES: int = 9
@@ -49,6 +51,8 @@ func _input(event):
 
 	grid_data[grid_pos.y][grid_pos.x] = player
 	create_marker(player, grid_pos * cell_size + Vector2i(cell_size / 2, cell_size / 2))
+	moves += 1
+	
 	if check_win() != 0:
 		get_tree().paused = true
 		$GameOverMenu.show()
@@ -70,11 +74,13 @@ func _input(event):
 		$ScoreLabel.text = score_format % [player_1_score, player_2_score]
 	
 	player *= -1
+	$PlayerLabel.text = next_player_format % [1 if player == 1 else 2]
 	temp_marker.queue_free()
 	create_marker(player, player_panel_pos + Vector2i(cell_size / 2, cell_size / 2), true)
 
 func new_game():
-	player = 1
+	first_turn_player *= -1
+	player = first_turn_player
 	winner = 0
 	moves = 0
 	grid_data = [
@@ -90,6 +96,7 @@ func new_game():
 	get_tree().call_group("circles", "queue_free")
 	get_tree().call_group("crosses", "queue_free")
 	
+	$PlayerLabel.text = next_player_format % [1 if player == 1 else 2]
 	create_marker(player, player_panel_pos + Vector2i(cell_size / 2, cell_size / 2), true)
 	$GameOverMenu.hide()
 	get_tree().paused = false
@@ -120,7 +127,6 @@ func check_win():
 	return winner
 
 func check_draw():
-	moves += 1
 	if moves == MAX_MOVES: return true
 	return false
 
