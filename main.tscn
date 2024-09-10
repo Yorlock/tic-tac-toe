@@ -1,0 +1,86 @@
+[gd_scene load_steps=8 format=3 uid="uid://cys7o7dipoqg5"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_7lg70"]
+[ext_resource type="PackedScene" uid="uid://c3xfnpeusahvx" path="res://circle.tscn" id="2_6kcj5"]
+[ext_resource type="PackedScene" uid="uid://mfe1jph1vy6a" path="res://board.tscn" id="2_upd3b"]
+[ext_resource type="PackedScene" uid="uid://cy47fxm6o7o3h" path="res://cross.tscn" id="3_rde8b"]
+[ext_resource type="PackedScene" uid="uid://3wjmi1fe4ma0" path="res://game_over_menu.tscn" id="5_wtip2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_opulr"]
+bg_color = Color(0.404055, 0.606681, 0.889666, 1)
+border_width_left = 5
+border_color = Color(0.781477, 0.796243, 0.988957, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_usv0x"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.526953, 0.657048, 0.997015, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+shadow_size = 5
+shadow_offset = Vector2(5, 5)
+
+[node name="Main" type="Node"]
+script = ExtResource("1_7lg70")
+circle_scene = ExtResource("2_6kcj5")
+cross_scene = ExtResource("3_rde8b")
+
+[node name="Board" parent="." instance=ExtResource("2_upd3b")]
+position = Vector2(300, 300)
+
+[node name="SidePanel" type="Panel" parent="."]
+custom_minimum_size = Vector2(300, 600)
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_opulr")
+
+[node name="PlayerLabel" type="Label" parent="."]
+offset_left = 600.0
+offset_top = 30.0
+offset_right = 900.0
+offset_bottom = 97.0
+theme_override_font_sizes/font_size = 45
+text = "Next Player: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerPanel" type="Panel" parent="."]
+offset_left = 650.0
+offset_top = 120.0
+offset_right = 850.0
+offset_bottom = 320.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_usv0x")
+
+[node name="GameOverMenu" parent="." instance=ExtResource("5_wtip2")]
+process_mode = 2
+
+[node name="ScoreNameLabel" type="Label" parent="."]
+offset_left = 600.0
+offset_top = 375.0
+offset_right = 900.0
+offset_bottom = 430.0
+theme_override_font_sizes/font_size = 45
+text = "Score:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="."]
+offset_left = 600.0
+offset_top = 450.0
+offset_right = 900.0
+offset_bottom = 575.0
+theme_override_font_sizes/font_size = 35
+text = "Player 1: 0
+Player 2: 0"
+horizontal_alignment = 1
+
+[connection signal="restart" from="GameOverMenu" to="." method="_on_game_over_menu_restart"]
