@@ -1,10 +1,18 @@
-[gd_scene load_steps=8 format=3 uid="uid://cys7o7dipoqg5"]
+[gd_scene load_steps=16 format=3 uid="uid://cys7o7dipoqg5"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_7lg70"]
 [ext_resource type="PackedScene" uid="uid://c3xfnpeusahvx" path="res://circle.tscn" id="2_6kcj5"]
 [ext_resource type="PackedScene" uid="uid://mfe1jph1vy6a" path="res://board.tscn" id="2_upd3b"]
 [ext_resource type="PackedScene" uid="uid://cy47fxm6o7o3h" path="res://cross.tscn" id="3_rde8b"]
+[ext_resource type="PackedScene" uid="uid://tlb82u2qxq5n" path="res://circle_win.tscn" id="4_5c6dx"]
+[ext_resource type="PackedScene" uid="uid://brwx7ra8gr7b" path="res://cross_win.tscn" id="5_f25br"]
 [ext_resource type="PackedScene" uid="uid://3wjmi1fe4ma0" path="res://game_over_menu.tscn" id="5_wtip2"]
+[ext_resource type="AudioStream" uid="uid://o03iv2esicj2" path="res://sounds/correct-choice.mp3" id="6_f4nwq"]
+[ext_resource type="AudioStream" uid="uid://b1rkgulom3bgh" path="res://sounds/wrong-choice.mp3" id="7_a2wks"]
+[ext_resource type="AudioStream" uid="uid://c61nv8b6cvvyo" path="res://sounds/end_game.mp3" id="8_3h864"]
+[ext_resource type="Script" path="res://sound_button.gd" id="9_3jd77"]
+[ext_resource type="Texture2D" uid="uid://cvhnq66fqqbsj" path="res://assets/volumeIcon.png" id="9_f6vha"]
+[ext_resource type="Texture2D" uid="uid://cckt6g31lnh1a" path="res://assets/muteIcon.png" id="10_b6mfp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_opulr"]
 bg_color = Color(0.404055, 0.606681, 0.889666, 1)
@@ -28,6 +36,8 @@ shadow_offset = Vector2(5, 5)
 script = ExtResource("1_7lg70")
 circle_scene = ExtResource("2_6kcj5")
 cross_scene = ExtResource("3_rde8b")
+circle_win_scene = ExtResource("4_5c6dx")
+cross_win_scene = ExtResource("5_f25br")
 
 [node name="Board" parent="." instance=ExtResource("2_upd3b")]
 position = Vector2(300, 300)
@@ -45,9 +55,9 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_opulr")
 
 [node name="PlayerLabel" type="Label" parent="."]
 offset_left = 600.0
-offset_top = 30.0
+offset_top = 45.0
 offset_right = 900.0
-offset_bottom = 97.0
+offset_bottom = 112.0
 theme_override_font_sizes/font_size = 42
 text = "Next Player: 1"
 horizontal_alignment = 1
@@ -65,9 +75,9 @@ process_mode = 2
 
 [node name="ScoreNameLabel" type="Label" parent="."]
 offset_left = 600.0
-offset_top = 375.0
+offset_top = 345.0
 offset_right = 900.0
-offset_bottom = 430.0
+offset_bottom = 403.0
 theme_override_font_sizes/font_size = 42
 text = "Score:"
 horizontal_alignment = 1
@@ -75,12 +85,37 @@ vertical_alignment = 1
 
 [node name="ScoreLabel" type="Label" parent="."]
 offset_left = 600.0
-offset_top = 450.0
+offset_top = 400.0
 offset_right = 900.0
-offset_bottom = 575.0
+offset_bottom = 525.0
 theme_override_font_sizes/font_size = 35
 text = "Player 1: 0
 Player 2: 0"
 horizontal_alignment = 1
 
+[node name="CorrectChoiceAudio" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
+stream = ExtResource("6_f4nwq")
+
+[node name="WrongChoiceAudio" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
+stream = ExtResource("7_a2wks")
+
+[node name="EndGameAudio" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
+stream = ExtResource("8_3h864")
+
+[node name="SoundButton" type="TextureButton" parent="."]
+offset_left = 863.0
+offset_top = 5.0
+offset_right = 991.0
+offset_bottom = 133.0
+scale = Vector2(0.25, 0.25)
+toggle_mode = true
+texture_normal = ExtResource("9_f6vha")
+texture_pressed = ExtResource("10_b6mfp")
+script = ExtResource("9_3jd77")
+
 [connection signal="restart" from="GameOverMenu" to="." method="_on_game_over_menu_restart"]
+[connection signal="pressed" from="SoundButton" to="." method="_on_sound_button_pressed"]
+[connection signal="pressed" from="SoundButton" to="SoundButton" method="_on_pressed"]
