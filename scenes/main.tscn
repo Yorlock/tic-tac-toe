@@ -1,0 +1,121 @@
+[gd_scene load_steps=16 format=3 uid="uid://cys7o7dipoqg5"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_466cu"]
+[ext_resource type="PackedScene" uid="uid://c3xfnpeusahvx" path="res://scenes/circle.tscn" id="2_7hwpi"]
+[ext_resource type="PackedScene" uid="uid://cy47fxm6o7o3h" path="res://scenes/cross.tscn" id="3_vns37"]
+[ext_resource type="PackedScene" uid="uid://tlb82u2qxq5n" path="res://scenes/circle_win.tscn" id="4_1rsn6"]
+[ext_resource type="PackedScene" uid="uid://brwx7ra8gr7b" path="res://scenes/cross_win.tscn" id="5_tqb2q"]
+[ext_resource type="PackedScene" uid="uid://mfe1jph1vy6a" path="res://scenes/board.tscn" id="6_ci1cr"]
+[ext_resource type="PackedScene" uid="uid://3wjmi1fe4ma0" path="res://scenes/game_over_menu.tscn" id="7_ok8fl"]
+[ext_resource type="AudioStream" uid="uid://o03iv2esicj2" path="res://sounds/correct-choice.mp3" id="8_mgupa"]
+[ext_resource type="AudioStream" uid="uid://b1rkgulom3bgh" path="res://sounds/wrong-choice.mp3" id="9_27aum"]
+[ext_resource type="AudioStream" uid="uid://c61nv8b6cvvyo" path="res://sounds/end_game.mp3" id="10_kak2g"]
+[ext_resource type="Texture2D" uid="uid://cvhnq66fqqbsj" path="res://assets/volumeIcon.png" id="11_fgwie"]
+[ext_resource type="Texture2D" uid="uid://cckt6g31lnh1a" path="res://assets/muteIcon.png" id="12_dgq2a"]
+[ext_resource type="Script" path="res://scripts/sound_button.gd" id="13_8xein"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_opulr"]
+bg_color = Color(0.404055, 0.606681, 0.889666, 1)
+border_width_left = 5
+border_color = Color(0.781477, 0.796243, 0.988957, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_usv0x"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.526953, 0.657048, 0.997015, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+shadow_size = 5
+shadow_offset = Vector2(5, 5)
+
+[node name="Main" type="Node"]
+script = ExtResource("1_466cu")
+circle_scene = ExtResource("2_7hwpi")
+cross_scene = ExtResource("3_vns37")
+circle_win_scene = ExtResource("4_1rsn6")
+cross_win_scene = ExtResource("5_tqb2q")
+
+[node name="Board" parent="." instance=ExtResource("6_ci1cr")]
+position = Vector2(300, 300)
+
+[node name="SidePanel" type="Panel" parent="."]
+custom_minimum_size = Vector2(300, 600)
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_opulr")
+
+[node name="PlayerLabel" type="Label" parent="."]
+offset_left = 600.0
+offset_top = 45.0
+offset_right = 900.0
+offset_bottom = 112.0
+theme_override_font_sizes/font_size = 42
+text = "Next Player: 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerPanel" type="Panel" parent="."]
+offset_left = 650.0
+offset_top = 120.0
+offset_right = 850.0
+offset_bottom = 320.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_usv0x")
+
+[node name="GameOverMenu" parent="." instance=ExtResource("7_ok8fl")]
+process_mode = 2
+
+[node name="ScoreNameLabel" type="Label" parent="."]
+offset_left = 600.0
+offset_top = 345.0
+offset_right = 900.0
+offset_bottom = 403.0
+theme_override_font_sizes/font_size = 42
+text = "Score:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="."]
+offset_left = 600.0
+offset_top = 400.0
+offset_right = 900.0
+offset_bottom = 525.0
+theme_override_font_sizes/font_size = 35
+text = "Player 1: 0
+Player 2: 0"
+horizontal_alignment = 1
+
+[node name="CorrectChoiceAudio" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
+stream = ExtResource("8_mgupa")
+
+[node name="WrongChoiceAudio" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
+stream = ExtResource("9_27aum")
+
+[node name="EndGameAudio" type="AudioStreamPlayer2D" parent="."]
+process_mode = 3
+stream = ExtResource("10_kak2g")
+
+[node name="SoundButton" type="TextureButton" parent="."]
+offset_left = 863.0
+offset_top = 5.0
+offset_right = 991.0
+offset_bottom = 133.0
+scale = Vector2(0.25, 0.25)
+toggle_mode = true
+texture_normal = ExtResource("11_fgwie")
+texture_pressed = ExtResource("12_dgq2a")
+script = ExtResource("13_8xein")
+
+[connection signal="restart" from="GameOverMenu" to="." method="_on_game_over_menu_restart"]
+[connection signal="pressed" from="SoundButton" to="." method="_on_sound_button_pressed"]
+[connection signal="pressed" from="SoundButton" to="SoundButton" method="_on_pressed"]
