@@ -1,5 +1,5 @@
 # tic-tac-toe
-A simple tic-tack-toe game.
+A simple tic-tac-toe game.
 
 Language: GDScript
 
