@@ -5,7 +5,7 @@ Language: GDScript
 
 ## Screenshots
 
-![Screenshot](screenshots/tic_tack_toe.png)
+![Screenshot](screenshots/tic_tac_toe.png)
 
 ## Used free assets:
 <a href="https://www.flaticon.com/free-icons/mute" title="mute icons">Mute icons created by Mayor Icons - Flaticon</a>
